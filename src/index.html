@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content="#b21afe" />
+    
+    <link rel="shortcut icon" href="/favicon.png" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <title>App</title>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script type="module" src="/scripts/index.js"></script>
+  </head>
+  <body>
+    
+    <header>
+      <a href="#main-content" class="skip-to-content">Skip to Content</a>
+      <div class="main-header container">
+        <a class="brand-name" href="#/">App</a>
+
+        <div class="header-actions">
+          <nav id="navigation-drawer" class="navigation-drawer">
+            <ul id="nav-list" class="nav-list">
+              <li><a href="#/">Beranda</a></li>
+              <li><a href="#/add">Tambah</a></li>
+              <li><a href="#/my-story">My Story</a></li>
+            </ul>
+          </nav>
+          <button id="subscribe-button" class="header-button" style="display: none;">
+            Subscribe Notifikasi
+          </button>
+          <button id="install-button" class="header-button" style="display: none;">
+            Install Aplikasi
+          </button>
+          <li id="logout-menu-item" style="display: none; list-style: none;"><button id="logout-button" class="header-button header-logout-button">Logout</button></li>
+        </div>
+        
+        <button id="drawer-button" class="drawer-button">☰</button>
+      </div>
+    </header>
+
+    <main id="main-content" class="main-content" tabindex="-1"></main>
+
+     <footer style="text-align:center; padding: 2rem 1rem; margin-top: 2rem; background: var(--text-color, #2d3748); color: var(--surface-color, white);">
+      Story App &copy; 2025
+    </footer>
+
+    <script>
+      const skipLink = document.querySelector('.skip-to-content');
+      skipLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelector(e.target.getAttribute('href')).focus();
+      });
+    </script>
+  </body>
+</html>
