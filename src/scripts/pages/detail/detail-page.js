@@ -1,3 +1,5 @@
+
+
 import StoryModel from "../../models/story-model";
 
 export default class DetailPage {
@@ -14,7 +16,7 @@ export default class DetailPage {
 
       const detailEl = document.getElementById("story-detail");
       detailEl.innerHTML = `
-        <h2>${story.name}</h2>
+        <h1>${story.name}</h1>
         <img src="${story.photoUrl}" alt="${story.name}" width="300" />
         <p>${story.description}</p>
         <p>Dibuat pada: ${new Date(story.createdAt).toLocaleString()}</p>
@@ -35,7 +37,6 @@ export default class DetailPage {
         window.location.hash = `#/stories/${id}`;
       });
 
-      // Akses keyboard (Enter)
       card.addEventListener("keypress", (e) => {
         if (e.key === "Enter") {
           const id = card.getAttribute("data-id");
@@ -45,4 +46,3 @@ export default class DetailPage {
     });
   }
 }
-

@@ -1,9 +1,10 @@
+
 export default class RegisterPage {
   async render() {
     return `
       <div class="auth-container">
         <div class="auth-card">
-          <h2 class="auth-card__title">Register</h2>
+          <h1 class="auth-card__title">Register</h1>
           <p class="auth-card__subtitle">Buat akun baru Anda</p>
           
           <form id="register-form">

@@ -1,7 +1,7 @@
-// src/scripts/pages/add/add-page.js
+
 
 import L from "leaflet";
-import StoryModel from '../../models/story-model'; // <-- Pastikan ini diimpor
+import StoryModel from '../../models/story-model'; 
 import MyStoryDb from '../../utils/db';
 
 export default class AddPage {
@@ -10,10 +10,9 @@ export default class AddPage {
   }
 
   async render() {
-    // Metode render() Anda tidak perlu diubah
     return `
       <section class="container" id="add-story-container">
-        <h2>Tambah Cerita Baru</h2>
+        <h1>Tambah Cerita Baru</h1>
         <form id="storyForm">
           <div class="form-group">
             <label for="description">Deskripsi</label>

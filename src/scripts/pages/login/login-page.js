@@ -1,9 +1,11 @@
+// src/scripts/pages/login/login-page.js
+
 export default class LoginPage {
   async render() {
     return `
       <div class="auth-container">
         <div class="auth-card">
-          <h2 class="auth-card__title">Login</h2>
+          <h1 class="auth-card__title">Login</h1>
           <p class="auth-card__subtitle">Silakan masuk untuk melanjutkan</p>
           
           <form id="login-form">
