@@ -1,4 +1,4 @@
-// src/public/sw.js
+
 
 const IS_DEVELOPMENT = self.location.hostname === 'localhost';
 
@@ -49,25 +49,44 @@ self.addEventListener('fetch', (event) => {
   if (IS_DEVELOPMENT) {
     return;
   }
+
   const { request } = event;
   if (!request.url.startsWith('http')) {
     return;
   }
+
+  
   if (request.url.startsWith(API_BASE_URL)) {
+  
+    if (request.method !== 'GET') {
+      event.respondWith(fetch(request));
+      return;
+    }
+
+   
     event.respondWith(
       caches.open(DYNAMIC_CACHE_NAME).then(async (cache) => {
         try {
           const networkResponse = await fetch(request);
+          
           cache.put(request, networkResponse.clone());
           return networkResponse;
         } catch (error) {
+     
           console.log('Service Worker: Fetching from cache for API request.');
-          return await cache.match(request);
+          const cachedResponse = await cache.match(request);
+          if (cachedResponse) {
+            return cachedResponse;
+          }
+          
+          throw error;
         }
       })
     );
     return;
   }
+
+
   event.respondWith(
     caches.match(request).then((cachedResponse) => {
       if (cachedResponse) {
@@ -85,44 +104,62 @@ self.addEventListener('fetch', (event) => {
 
 self.addEventListener('push', (event) => {
   console.log('Service Worker: Push Received.');
-  let notificationData = {};
+  let notificationData;
+  
   try {
     notificationData = event.data.json();
   } catch (e) {
+    console.error('Failed to parse push notification data:', e);
     notificationData = {
-      title: 'Notifikasi Uji Coba',
-      body: event.data ? event.data.text() : 'Ini adalah pesan push simulasi.',
-      url: '/',
+      title: 'Notifikasi Baru',
+      options: {
+        body: event.data ? event.data.text() : 'Anda memiliki pesan baru.',
+        url: '/',
+      },
     };
   }
-  const title = notificationData.title || 'Notifikasi Baru';
+
+  const title = notificationData.title;
   const options = {
-    body: notificationData.body || 'Ada sesuatu yang baru untuk Anda.',
-    icon: '/icons/icon-192x192.png',
-    badge: '/icons/icon-96x96.png',
+    body: notificationData.options.body, 
+    icon: '/icons/icon-192x192.png',      
+    badge: '/icons/icon-96x96.png',       
     data: {
-      url: notificationData.url || '/',
+      
+      url: notificationData.options.url || '/', 
     },
+    actions: [
+      { action: 'open_url', title: 'Buka' }
+    ]
   };
+
+  
   event.waitUntil(
     self.registration.showNotification(title, options)
   );
 });
 
-// === BAGIAN YANG DIPERBAIKI ===
+
 self.addEventListener('notificationclick', (event) => {
   console.log('Service Worker: Notification-click event');
-  // event.notification.close(); // Baris ini dihapus agar notifikasi tidak langsung hilang
+  
 
+  event.notification.close();
+
+  
   const urlToOpen = event.notification.data.url;
+
+  
   event.waitUntil(
-    clients.matchAll({ type: 'window' }).then((windowClients) => {
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then((windowClients) => {
+      
       for (let i = 0; i < windowClients.length; i++) {
         const client = windowClients[i];
         if (client.url === urlToOpen && 'focus' in client) {
           return client.focus();
         }
       }
+      
       if (clients.openWindow) {
         return clients.openWindow(urlToOpen);
       }
